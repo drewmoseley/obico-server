@@ -6,6 +6,8 @@ x-web-defaults: &web-defaults
   volumes:
     - ./backend:/app
     - ./frontend:/frontend
+    - ${HOME}/local/docker-volumes/obico/data/db.sqlite3:/app/db.sqlite3
+    - ${HOME}/local/docker-volumes/obico/media:/app/static_build/media
   depends_on:
     - redis
   environment:
