@@ -61,6 +61,12 @@ services:
       FLASK_APP: 'server.py'
       # ML_API_TOKEN:
     tty: true
+    # Published on loopback only so the sibling bambuddy stack (network_mode:
+    # host, so it cannot use this compose network's DNS) can reach the failure
+    # detector. ML_API_TOKEN is unset, i.e. the endpoint is unauthenticated —
+    # keep this bound to 127.0.0.1, never a LAN address.
+    ports:
+      - "127.0.0.1:3333:3333"
     command: bash -c "gunicorn --bind 0.0.0.0:3333 --workers 1 wsgi"
     healthcheck:
       test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider --no-check-certificate http://ml_api:3333/hc/"]
